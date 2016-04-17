@@ -5,29 +5,25 @@ import sys
 from os import listdir
 from os.path import isfile, join
 
-def generate_spectral_centroid(file, file_name, path):
+def generate_spread(file, file_name, path):
 	loader = essentia.standard.MonoLoader(filename = file)
 	audio = loader()
 
 	w = Windowing(type = 'hann')
 	spectrum = Spectrum()
-	centroid = Centroid()
-
+	central_moments = CentralMoments()
+	distribution_shape = DistributionShape()
 	pool = essentia.Pool()
 
 	for frame in FrameGenerator(audio, frameSize = 2048, hopSize = 512):
-	    c = centroid(spectrum(w(frame)))
-        pool.add('lowlevel.centroid', c)
+	    c = central_moments(spectrum(w(frame)))
+	    spread, skewness, kurtosis = distribution_shape(c)
+	    #print("spread", spread, " skewness", skewness, "kurtosis", kurtosis)
+        pool.add('lowlevel.spread', spread)
 
-	#output = YamlOutput(filename = join(path, 'centroid', str(file_name) + '.yaml'))
-	#output(pool)
-
-	aggrPool = PoolAggregator(defaultStats = [ 'mean', 'var' ])(pool)
-	output = YamlOutput(filename = join(path, 'centroid', str(file_name) + '_aggr' + '.yaml'), format = 'json')
-	output(aggrPool)
-	del pool
-	del aggrPool
-	del output
+	output = YamlOutput(filename = join(path, 'spread', str(file_name) + '.json')
+			 , format = 'json')
+	output(pool)
 
 
 def main():
@@ -37,7 +33,7 @@ def main():
 	file_names = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 	
 	for file, file_name in zip(files, file_names):
-		generate_spectral_centroid(file, file_name, mypath)
+		generate_spread(file, file_name, mypath)
 
 
 if __name__ == '__main__':

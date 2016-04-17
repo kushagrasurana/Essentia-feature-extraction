@@ -18,14 +18,16 @@ def generate_mfcc(file, file_name, path):
 	for frame in FrameGenerator(audio, frameSize = 2048, hopSize = 262144):
 	    mfcc_bands, mfcc_coeffs = mfcc(spectrum(w(frame)))
 	    pool.add('lowlevel.mfcc', mfcc_coeffs)
-	    pool.add('lowlevel.mfcc_bands', mfcc_bands)
 
-	output = YamlOutput(filename = join(path, 'mfcc', str(file_name) + '.sig'), format = 'json')
-	output(pool)
+#	output = YamlOutput(filename = join(path, 'mfcc', str(file_name) + '.sig'), format = 'json')
+#	output(pool)
 
 	aggrPool = PoolAggregator(defaultStats = [ 'mean', 'var' ])(pool)
-	output = YamlOutput(filename = join(path, 'mfcc', str(file_name) + '_aggr' + '.sig'), format = 'json')
+	output = YamlOutput(filename = join(path, 'mfcc', str(file_name) + '.json'), format = 'json')
 	output(aggrPool)
+	del pool
+	del aggrPool
+	del output
 
 
 def main():
