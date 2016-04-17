@@ -10,7 +10,7 @@ def generate_zero_crossing_rate(file, file_name, path):
 	audio = loader()
 
 	w = Windowing(type = 'hann')
-	spectrum = Spectrum()
+	spectrum = Spectrum(size = 4096)
 	zero_crossing_rate = ZeroCrossingRate()
 
 	pool = essentia.Pool()

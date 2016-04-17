@@ -10,7 +10,7 @@ def generate_flatness(file, file_name, path):
 	audio = loader()
 
 	w = Windowing(type = 'hann')
-	spectrum = Spectrum()
+	spectrum = Spectrum(size = 4096)
 	flatness = Flatness()
 
 	pool = essentia.Pool()

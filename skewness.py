@@ -10,7 +10,7 @@ def generate_skewness(file, file_name, path):
 	audio = loader()
 
 	w = Windowing(type = 'hann')
-	spectrum = Spectrum()
+	spectrum = Spectrum(size = 4096)
 	central_moments = CentralMoments()
 	distribution_shape = DistributionShape()
 	pool = essentia.Pool()

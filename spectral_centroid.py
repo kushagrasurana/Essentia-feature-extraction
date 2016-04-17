@@ -10,7 +10,7 @@ def generate_spectral_centroid(file, file_name, path):
 	audio = loader()
 
 	w = Windowing(type = 'hann')
-	spectrum = Spectrum()
+	spectrum = Spectrum(size = 4096)
 	centroid = Centroid()
 
 	pool = essentia.Pool()

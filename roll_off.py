@@ -10,7 +10,7 @@ def generate_roll_off(file, file_name, path):
 	audio = loader()
 
 	w = Windowing(type = 'hann')
-	spectrum = Spectrum()
+	spectrum = Spectrum(size = 4096)
 	roll_off = RollOff()
 
 	pool = essentia.Pool()

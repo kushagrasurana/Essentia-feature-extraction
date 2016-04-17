@@ -10,12 +10,12 @@ def generate_mfcc(file, file_name, path):
 	audio = loader()
 
 	w = Windowing(type = 'hann')
-	spectrum = Spectrum()
+	spectrum = Spectrum(size = 4096)
 	mfcc = MFCC()
 
 	pool = essentia.Pool()
 
-	for frame in FrameGenerator(audio, frameSize = 2048, hopSize = 262144):
+	for frame in FrameGenerator(audio, frameSize = 2048, hopSize = 512):
 	    mfcc_bands, mfcc_coeffs = mfcc(spectrum(w(frame)))
 	    pool.add('lowlevel.mfcc', mfcc_coeffs)
 
